@@ -5,10 +5,13 @@ import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import { UserDetailContext } from '@/context/UserDetailContext';
+<<<<<<< HEAD
 import { TripDetailContext } from '@/context/TripDetailContex';
 import { TripInfo } from './create-new-trip/_components/ChatBox';
 
 
+=======
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
 
 function Provider({
   children,
@@ -18,7 +21,10 @@ function Provider({
 
   const CreateUser=useMutation(api.user.CreateNewUser)
   const [userDetail, setUserDetail] = useState<any>();
+<<<<<<< HEAD
   const [TripDetailInfo, setTripDetailInfo] = useState<TripInfo | null>(null);
+=======
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
   const {user}=useUser();
 
   useEffect(()=>{
@@ -39,18 +45,25 @@ function Provider({
 
   return (
     <UserDetailContext.Provider value={{userDetail, setUserDetail}}>
+<<<<<<< HEAD
       <TripDetailContext.Provider value={{TripDetailInfo, setTripDetailInfo}}>
     <div> 
         
         <Header/>
         {children} </div>
       </TripDetailContext.Provider>
+=======
+    <div> 
+        <Header/>
+        {children} </div>
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
     </UserDetailContext.Provider>
   )
 }
 
 export default Provider
  
+<<<<<<< HEAD
 export const useUserDetail = () => {
   return useContext(UserDetailContext);
 }
@@ -58,4 +71,8 @@ export const useUserDetail = () => {
 
 export const useTripDetail = () => {
   return useContext(TripDetailContext);
+=======
+export const useUsertDetail = () => {
+  return useContext(UserDetailContext);
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
 }

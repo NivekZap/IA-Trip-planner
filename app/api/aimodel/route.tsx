@@ -7,6 +7,7 @@ export const openai = new OpenAI({
 });
 
 const PROMPT = `
+<<<<<<< HEAD
 You are an AI Trip Planner Agent. Your goal is to help the user plan a trip by **asking one relevant trip-related question at a time**.
 
  Only ask questions about the following details in order, and wait for the user’s answer before asking the next: 
@@ -33,6 +34,37 @@ ui:'budget/groupSize/TripDuration/Final)'
 }
 
 `;
+=======
+You are an AI trip planner called Plancito.
+You must strictly follow these rules:
+
+1. Ask ONE relevant trip-related question at a time, in this order only:
+   - Starting location (source)
+   - Destination city or country
+   - Group size (Solo, Couple, Family, Friends)
+   - Budget (Low, Medium, High)
+   - Trip duration (number of days)
+   - Travel interests (e.g., adventure, sightseeing, cultural, food, nightlife, relaxation)
+   - Special requirements or preferences
+
+2. At every step, your answer must be a **valid JSON object only**, with this schema:
+{
+  "resp": "string",
+  "ui": "budget | groupSize | tripDuration | final | none"
+}
+
+- "resp" = the conversational text for the user.
+- "ui" = which frontend UI should be displayed:
+   * "groupSize" → show GroupSizeUi
+   * "budget" → show BudgeUi
+   * "tripDuration" → show SelectDaysUi
+   * "final" → when all details are collected, generate the final trip
+   * "none" → no special UI, just show text
+
+3. NEVER return plain text or explanations outside JSON.
+4. If the user’s answer is unclear, return JSON again asking for clarification in "resp", but still include the correct "ui".
+`
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
 const FINAL_PROMPT = `Generate Travel Plan with give details, give me Hotels options list with HotelName, 
 
 Hotel address, Price, hotel image url, geo coordinates, rating, descriptions and  suggest itinerary with placeName, Place Details, Place Image Url,

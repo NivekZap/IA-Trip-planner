@@ -11,8 +11,11 @@ import FinalUi from './FinalUi'
 import SelectDaysUi from './SelectDaysUi'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
+<<<<<<< HEAD
 import { useTripDetail, useUserDetail } from "@/app/provider";
 import { v4 as uuidv4 } from 'uuid';
+=======
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
 
 type Message = {
   role: string;
@@ -26,6 +29,7 @@ export type TripInfo ={
   duration:string,
   group_size:string,
   origin:string,
+<<<<<<< HEAD
   hotels:Hotel[],
   itinerary:Itinerary,
 };
@@ -63,6 +67,11 @@ type Itinerary = {
   best_time_to_visit_day: string;
   activities: Activity[];
 };
+=======
+  hotels:any,
+  itinerary:any,
+}
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
 
 function ChatBox() {
 
@@ -73,7 +82,10 @@ function ChatBox() {
   const [tripDetail, setTripDetail]=useState<TripInfo>()
   const SaveTripDetail=useMutation(api.tripDetail.CreateTripDetail)
   const {userDetail, setUserDetail}=useUserDetail();
+<<<<<<< HEAD
   const {tripDetailInfo, setTripDetailInfo}=useTripDetail();
+=======
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
   
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -123,19 +135,29 @@ function ChatBox() {
         
         if (isFinal){
           setTripDetail(result?.data?.trip_plan);
+<<<<<<< HEAD
           setTripDetailInfo(result?.data?.trip_plan);
           setIsFinal(false);
           const tripId=uuidv4();
           await SaveTripDetail({
             tripDetail: result?.data?.trip_plan,
             tripId: tripId,
+=======
+          await SaveTripDetail({
+            tripDetail: result?.data?.trip_plan,
+            tripId:'',
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
             uid: userDetail?._id
           });
 
         }
         setLoading(false);
     }
+<<<<<<< HEAD
 
+=======
+  /* MINUTO 2:30:50 */
+>>>>>>> e1cc6e49386244d7b76788041d25151d79c8f819
   
   const RenderGenerativeUi = (ui: string) => {
       if (ui === 'budget') {
