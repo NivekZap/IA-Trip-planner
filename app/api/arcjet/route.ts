@@ -2,7 +2,7 @@ import arcjet, { tokenBucket } from "@arcjet/next";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export const aj = arcjet({
+ const aj = arcjet({
   key: process.env.ARCJET_KEY!, // Get your site key from https://app.arcjet.com
   rules: [
     // Create a token bucket rate limit. Other algorithms are supported.
