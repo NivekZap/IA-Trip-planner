@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import { aj } from "../arcjet/route";
+import { aj } from "../../../lib/arcjet";
 import { currentUser } from "@clerk/nextjs/server";
 
 

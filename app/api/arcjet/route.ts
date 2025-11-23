@@ -1,4 +1,4 @@
-import arcjet, { tokenBucket } from "@arcjet/next";
+/* import arcjet, { tokenBucket } from "@arcjet/next";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -29,4 +29,4 @@ export async function GET(req: Request) {
   }
 
   return NextResponse.json({ message: "Hello world" });
-}
+} */
