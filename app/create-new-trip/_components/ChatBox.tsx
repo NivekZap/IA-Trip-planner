@@ -13,6 +13,8 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useTripDetail, useUserDetail } from "@/app/provider";
 import { v4 as uuidv4 } from 'uuid';
+import toast from 'react-hot-toast';
+
 
 
 type Message = {
@@ -135,8 +137,7 @@ function ChatBox() {
 
         }
         setLoading(false);
-    }
-
+    } 
   
   const RenderGenerativeUi = (ui: string) => {
       if (ui === 'budget') {

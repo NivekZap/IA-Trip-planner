@@ -148,7 +148,7 @@ function Itinerary() {
       :
       <div> 
       <h2 className='flex gap-2 items-center absolute bottom-10'> <ArrowLeft/> Planifica tu proximo viaje</h2>
-      <Image src={''} alt='travel' width={'800'}
+      <Image src={"/travel.jpg"} alt='travel' width={'800'}
       height={800}
       className='w-full h-gull object-cover rounded-3xl'
       />  
@@ -162,3 +162,4 @@ function Itinerary() {
 }
 
 export default Itinerary
+

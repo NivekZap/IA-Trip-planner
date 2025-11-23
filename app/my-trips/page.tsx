@@ -47,7 +47,7 @@ function Mytrips() {
     <div>
         {myTrips?.map((trip,index) => (
             <div key={index}> 
-                <h2>{trip?.tripDetail?.destination} <ArrowBigRightIcon />{trip?.tripDetail?.destination}</h2>
+                <h2 className='flex gap-2 font-semibold text-xl'>{trip?.tripDetail?.destination} <ArrowBigRightIcon />{trip?.tripDetail?.destination}</h2>
             </div>
         ))}
     </div>
