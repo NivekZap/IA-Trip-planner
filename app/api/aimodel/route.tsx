@@ -4,15 +4,16 @@ import { aj } from "../arcjet/route";
 import { currentUser } from "@clerk/nextjs/server";
 
 
-export const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
+// 🛑 CAMBIO CLAVE: Se eliminó 'export' para que Next.js no lo detecte como una exportación de Route Handler.
+const openai = new OpenAI({ 
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY,
 });
 
 const PROMPT = `
 You are an AI Trip Planner Agent. Your goal is to help the user plan a trip by **asking one relevant trip-related question at a time**.
 
- Only ask questions about the following details in order, and wait for the user’s answer before asking the next: 
+ Only ask questions about the following details in order, and wait for the user’s answer before asking the next: 
 
 1. Starting location (source) 
 2. Destination city or country 
@@ -38,136 +39,143 @@ ui:'budget/groupSize/TripDuration/Final)'
 `;
 const FINAL_PROMPT = `Generate Travel Plan with give details, give me Hotels options list with HotelName, 
 
-Hotel address, Price, hotel image url, geo coordinates, rating, descriptions and  suggest itinerary with placeName, Place Details, Place Image Url,
+Hotel address, Price, hotel image url, geo coordinates, rating, descriptions and  suggest itinerary with placeName, Place Details, Place Image Url,
 
- Geo Coordinates,Place address, ticket Pricing, Time travel each of the location , with each day plan with best time to visit in JSON format.
+ Geo Coordinates,Place address, ticket Pricing, Time travel each of the location , with each day plan with best time to visit in JSON format.
 
- Output Schema:
+ Output Schema:
 
- {
+ {
 
-  "trip_plan": {
+  "trip_plan": {
 
-    "destination": "string",
+    "destination": "string",
 
-    "duration": "string",
+    "duration": "string",
 
-    "origin": "string",
+    "origin": "string",
 
-    "budget": "string",
+    "budget": "string",
 
-    "group_size": "string",
+    "group_size": "string",
 
-    "hotels": [
+    "hotels": [
 
-      {
+      {
 
-        "hotel_name": "string",
+        "hotel_name": "string",
 
-        "hotel_address": "string",
+        "hotel_address": "string",
 
-        "price_per_night": "string",
+        "price_per_night": "string",
 
-        "hotel_image_url": "string",
+        "hotel_image_url": "string",
 
-        "geo_coordinates": {
+        "geo_coordinates": {
 
-          "latitude": "number",
+          "latitude": "number",
 
-          "longitude": "number"
+          "longitude": "number"
 
-        },
+        },
 
-        "rating": "number",
+        "rating": "number",
 
-        "description": "string"
+        "description": "string"
 
-      }
+      }
 
-    ],
+    ],
 
-    "itinerary": [
+    "itinerary": [
 
-      {
+      {
 
-        "day": "number",
+        "day": "number",
 
-        "day_plan": "string",
+        "day_plan": "string",
 
-        "best_time_to_visit_day": "string",
+        "best_time_to_visit_day": "string",
 
-        "activities": [
+        "activities": [
 
-          {
+          {
 
-            "place_name": "string",
+            "place_name": "string",
 
-            "place_details": "string",
+            "place_details": "string",
 
-            "place_image_url": "string",
+            "place_image_url": "string",
 
-            "geo_coordinates": {
+            "geo_coordinates": {
 
-              "latitude": "number",
+              "latitude": "number",
 
-              "longitude": "number"
+              "longitude": "number"
 
-            },
+            },
 
-            "place_address": "string",
+            "place_address": "string",
 
-            "ticket_pricing": "string",
+            "ticket_pricing": "string",
 
-            "time_travel_each_location": "string",
+            "time_travel_each_location": "string",
 
-            "best_time_to_visit": "string"
+            "best_time_to_visit": "string"
 
-          }
+          }
 
-        ]
+        ]
 
-      }
+      }
 
-    ]
+    ]
 
-  }
+  }
 
 }
 `
 
 
 export async function POST(req: NextRequest) {
-  const { messages, isFinal} = await req.json();
-  const user=await currentUser();
-  const decision = await aj.protect(req, { userId:user?.primaryEmailAddress?.emailAddress??'', requested: isFinal?5:0 }); // Deduct 5 tokens from the bucket
-  //@ts-ignore
-  if(decision?.reason?.remaining==0) {
-    return NextResponse.json({
-      resp:'no tienes creditos',
-      ui: 'limit'
-    })
+  const { messages, isFinal} = await req.json();
+  const user=await currentUser();
+  // Se corrigió el uso del operador de coalescencia nula para la llamada de Arcjet
+  const decision = await aj.protect(req, { userId: user?.primaryEmailAddress?.emailAddress ?? '', requested: isFinal ? 5 : 0 }); 
 
-  }
+  //@ts-ignore
+  if(decision?.reason?.remaining==0) {
+    return NextResponse.json({
+      resp:'no tienes creditos',
+      ui: 'limit'
+    })
 
-  try {
-    const completion = await openai.chat.completions.create({
-      model: "openai/gpt-oss-20b:free", 
-      /* deepseek/deepseek-r1-0528-qwen3-8b:free */
-      response_format: { type: "json_object" }, 
-      messages: [
-        {
-          role: "system",
-          content: isFinal?FINAL_PROMPT :PROMPT
-        },
-        ...messages,
-      ],
-    });
+  }
 
-    console.log(completion.choices[0].message);
-    const message = completion.choices[0].message;
-    return NextResponse.json(JSON.parse(message.content ?? "{}"));
-  } catch (e) {
-    console.error("Error in AI completion:", e);
-    return NextResponse.json({ error: String(e) });
-  }
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "openai/gpt-oss-20b:free", 
+      /* deepseek/deepseek-r1-0528-qwen3-8b:free */
+      response_format: { type: "json_object" }, 
+      messages: [
+        {
+          role: "system",
+          content: isFinal?FINAL_PROMPT :PROMPT
+        },
+        ...messages,
+      ],
+    });
+
+    console.log(completion.choices[0].message);
+    const message = completion.choices[0].message;
+    // Se añade una verificación básica para manejar el caso donde message.content es null
+    const content = message.content;
+    if (!content) {
+        return NextResponse.json({ error: "AI response content was empty" }, { status: 500 });
+    }
+    return NextResponse.json(JSON.parse(content));
+  } catch (e) {
+    console.error("Error in AI completion:", e);
+    return NextResponse.json({ error: String(e) }, { status: 500 });
+  }
 }
