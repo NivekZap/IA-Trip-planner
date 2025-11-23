@@ -5,6 +5,7 @@ import React, {
   useState,
   createContext,
   useContext,
+  RefObject,
 } from "react";
 import type { ReactElement } from "react";
 import {
@@ -184,7 +185,12 @@ export const Card = ({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  useOutsideClick(containerRef, () => handleClose());
+ /*  useOutsideClick(containerRef, () => handleClose()); */
+
+  useOutsideClick(
+    containerRef as RefObject<HTMLDivElement>, 
+    () => handleClose()
+);
 
   const handleOpen = () => {
     setOpen(true);
