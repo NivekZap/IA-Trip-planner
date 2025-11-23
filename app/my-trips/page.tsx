@@ -1,3 +1,4 @@
+"use client"
 import { Button } from '@/components/ui/button'
 import { useConvex } from 'convex/react';
 import Link from 'next/link'
